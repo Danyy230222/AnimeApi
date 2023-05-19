@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carousel;
 use App\Models\ImagenCarousel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,8 @@ class ImagenCarouselController extends Controller
      */
     public function create()
     {
-        return view('imagencarousel.create');
+        $carouselid = Carousel::all();
+        return view('imagencarousel.create', compact('carouselid'));
     }
 
     /**
@@ -39,23 +41,45 @@ class ImagenCarouselController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request ->validate([
             'Sinopsis'=> 'required',
             'Logo'=> 'required|image|mimes:jpeg,png,jpg',
-            // 'ImagenWeb'=> 'required|image',
-            // 'ImagenMovil'=> 'required|image',
-            // 'carousel_id'=> 'required'
+             'ImagenWeb'=> 'required|image',
+             'ImagenMovil'=> 'required|image',
+             'Year'=> 'required',
+             'Tipo'=>'required',
+             'Subtitulado'=>'required',
+             'Doblado'=>'required',
+             'carousel_id'=> 'required'
         ]
             
         );
 
-        $images=  $request->file('Logo')->store('Logo');
-        $relativePath = Storage::path($images);
+        $imagesLogo=  $request->file('Logo')->store('Logo');
+        $relativePathLogo = Storage::url($imagesLogo);
+      
 
-        $storagePath = substr($relativePath, strpos($relativePath, '/storage'));
+        $imagesWeb=  $request->file('ImagenWeb')->store('ImagenWeb');
+        $relativePathWeb = Storage::url($imagesWeb);
+        
 
-        return $storagePath;
-        // return redirect()->route('imagencarousel.index')->with('success', 'Carousel Creado Correctamente');
+        $imagesMovil=  $request->file('ImagenMovil')->store('ImagenMovil');
+        $relativePathMovil = Storage::url($imagesMovil);
+       
+
+        ImagenCarousel::create([
+            'Sinopsis'=> $request->Sinopsis,
+            'Logo'=> $relativePathLogo,
+             'ImagenWeb'=> $relativePathWeb,
+             'ImagenMovil'=> $relativePathMovil,
+             'Year'=> $request->Year,
+             'Tipo'=>$request->Tipo,
+             'Subtitulado'=>$request->Subtitulado,
+             'Doblado'=>$request->Doblado,
+             'carousel_id'=> $request->carousel_id
+        ]);
+         return redirect()->route('imagencarousel.index')->with('success', 'Carousel Creado Correctamente');
     }
 
     /**
@@ -89,7 +113,7 @@ class ImagenCarouselController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -98,8 +122,25 @@ class ImagenCarouselController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($imagen)
     {
-        //
+        $datos= ImagenCarousel::find($imagen);
+
+        $imagesLogo=  $datos->Logo;
+        $storagePathLogo = substr($imagesLogo, strpos($imagesLogo, 'Logo'));
+
+        $ImagenWeb=  $datos->ImagenWeb;
+        $storagePathImagenWeb = substr($ImagenWeb, strpos($ImagenWeb, 'ImagenWeb'));
+
+        $ImagenMovil=  $datos->ImagenMovil;
+        $storagePathMovil = substr($ImagenMovil, strpos($ImagenMovil, 'ImagenMovil'));
+        
+
+         Storage::delete($storagePathLogo);
+         Storage::delete($storagePathImagenWeb);
+         Storage::delete($storagePathMovil);
+        
+         $datos->delete();
+         return redirect()->route('imagencarousel.index')->with('success','Articulo eliminado correctamente');
     }
 }

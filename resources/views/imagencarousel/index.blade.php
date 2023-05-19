@@ -34,11 +34,15 @@
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">ID</th>
-                                <th class="px-4 py-3">Logo</th>
                                 <th class="px-4 py-3">Sinopsis</th>
+                                <th class="px-4 py-3">Logo</th>
                                 <th class="px-4 py-3">ImagenWeb</th>
                                 <th class="px-4 py-3">ImagenMovil</th>
                                 <th class="px-4 py-3">CarouselID</th>
+                                <th class="px-4 py-3">Año</th>
+                                <th class="px-4 py-3">Tipo</th>
+                                <th class="px-4 py-3">Subtitulos</th>
+                                <th class="px-4 py-3">Doblado</th>
                                 <th class="px-4 py-3">Acciones</th>
                                
 
@@ -57,11 +61,12 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                       <img src="{{ $item->Logo }}" alt="{{ $item->Logo }}" >
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
                                         {{ $item->Sinopsis }}
                                     </td>
+                                    <td class="px-4 py-3 text-sm">
+                                       <img src="{{ $item->Logo }}" alt="{{ $item->Logo }}" >
+                                    </td>
+                                   
                                     <td class="px-4 py-3 text-sm">
                                         <img src="{{ asset($item->ImagenWeb) }}" alt="{{ $item->ImagenWeb }}" >
                                     </td>
@@ -70,6 +75,18 @@
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ $item->Carousel->titulo }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->Year }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->Tipo }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->Subtitulado }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->Doblado }}
                                     </td>
                                    
                                     

@@ -37,15 +37,16 @@ Route::resource('fraction', FractionController::class)->names('fraction');
 
 Route::get('/manager',[ManagerController::class, 'index'])->name('manager.index');
 Route::get('/manager/{id}',[ManagerController::class, 'showarticle'])->name('manager.showarticle');
-
+Route::resource('/carousel', CarouselController::class);
+Route::resource('/imagencarousel', ImagenCarouselController::class);
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/', function () { return view('dashboard');});
     
     Route::view('dashboard', 'dashboard')->name('dashboard');
 
-    Route::resource('/carousel', CarouselController::class);
-    Route::resource('/imagencarousel', ImagenCarouselController::class);
+    
+    
    
     Route::view('forms', 'forms')->name('forms');
     Route::view('file', 'file')->name('file');

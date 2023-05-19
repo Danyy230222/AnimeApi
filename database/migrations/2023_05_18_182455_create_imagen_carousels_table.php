@@ -19,6 +19,10 @@ class CreateImagenCarouselsTable extends Migration
             $table->string('Sinopsis');
             $table->string('ImagenWeb');
             $table->string('ImagenMovil');
+            $table->string('Tipo');
+            $table->integer('Year');
+            $table->string('Subtitulado');
+            $table->string('Doblado');
             $table->unsignedBigInteger('carousel_id');
             $table->foreign('carousel_id')->references('id')->on('carousels');
             $table->timestamps();
