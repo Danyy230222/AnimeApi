@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Carousel;
+use App\Models\Genero;
+use App\Models\ImagenCarousel;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UserSeeder::class);
+        Genero::factory(20)->create();
+        Carousel::factory(1)->create();
+        ImagenCarousel::factory(3)->create();
     }
 }

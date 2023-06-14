@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\FractionController;
+use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\ImagenCarouselController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\YearController;
+use App\Models\Temporada;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,8 +48,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/', function () { return view('dashboard');});
     
     Route::view('dashboard', 'dashboard')->name('dashboard');
-
-    
+    Route::resource('/genero', GeneroController::class);
+    Route::resource('/anime', AnimeController::class);
+    Route::resource('/temporada', TemporadaController::class);
+    Route::get('/temporada/crear/{id}', [TemporadaController::class, 'crear'])->name('temporada.crear');
     
    
     Route::view('forms', 'forms')->name('forms');

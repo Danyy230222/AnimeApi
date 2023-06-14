@@ -1,7 +1,7 @@
-<x-app-layout title="Carousel">
+<x-app-layout title="Temporadas">
     <div class="container grid px-6 mx-auto">
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-            Listar Carousel
+            Listar Temporadas de {{$anime->Titulo}}
         </h2>
         @if (session('success'))
             <div class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
@@ -18,36 +18,34 @@
         @endif
 
         
-        <a href="{{ route('carousel.create') }}">
+        <a href="{{ route('temporada.crear', $anime->id) }}">
             <button type="button"
                 class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-600 transition ease-in-out duration-150  w-3/12 mb-4"
                 wire:click="$set('open', true)">
-                Crear nuevo carousel
+                Crear nuevo temporada
             </button>
         </a>
-        <a href="{{ route('imagencarousel.index') }}">
-            <button type="button"
-                class="inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-600 transition ease-in-out duration-150  w-3/12 mb-4"
-                wire:click="$set('open', true)">
-                Ver elementos de carousel
-            </button>
-        </a>
+        
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             <div class="w-full overflow-x-auto">
-                @if ($carousel->count())
+                @if ($temporada->count())
                     <table class="w-full ">
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">ID</th>
-                                <th class="px-4 py-3">Titulo</th>
+                                <th class="px-4 py-3">Nombre</th>
+                                <th class="px-4 py-3">Fecha Inicio</th>
+                                <th class="px-4 py-3">Fecha Final</th>
+                                <th class="px-4 py-3">Cantidad de Capitulos</th>
+                                <th class="px-4 py-3">Anime</th>
                                 <th class="px-4 py-3">Acciones</th>
                                
 
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            @foreach ($carousel as $item)
+                            @foreach ($temporada as $item)
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
                                         <div class="flex items-center text-sm">
@@ -59,14 +57,27 @@
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $item->titulo }}
+                                        {{ $item->Nombre }}
                                     </td>
-                                   
+                                    
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->FechaInicio }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->FechaFin }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->CantidadCapitulos }}
+                                    </td>
+                                     <td class="px-4 py-3 text-sm">
+                                        {{ $item->anime->Titulo }}
+                                    </td>
+                                    
                                     
 
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
-                                            <a href="{{route('carousel.edit', $item->id)}}">
+                                            <a href="{{route('temporada.edit', $item->id)}}">
                                                 <button
                                                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                                                     aria-label="Edit">
@@ -78,7 +89,8 @@
                                                     </svg>
                                                 </button>
                                             </a>
-                                            <form action="{{route('carousel.destroy', $item->id)}}" method="post" onsubmit="return confirm('Seguro desea eliminar el articulo? Perdera todos los archivos en ella')">
+                                           
+                                            <form action="{{route('temporada.destroy', $item->id)}}" method="post" onsubmit="return confirm('Seguro desea eliminar el articulo? Perdera todos los archivos en ella')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -107,8 +119,19 @@
                         No existe ningun registro
                     </div>
                 @endif
+                
             </div>
+          
             
+        </div>
+        <div class="flex mt-6 text-sm ">
+            <a href="{{route('anime.index')}}" class=" px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple">
+                
+                    
+                    Cancelar
+                
+            </a>
+           
         </div>
     </div>
 </x-app-layout>

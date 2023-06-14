@@ -51,6 +51,7 @@ class ImagenCarouselController extends Controller
              'Tipo'=>'required',
              'Subtitulado'=>'required',
              'Doblado'=>'required',
+             'Titulo'=> 'required',
              'carousel_id'=> 'required'
         ]
             
@@ -69,6 +70,7 @@ class ImagenCarouselController extends Controller
        
 
         ImagenCarousel::create([
+            'Titulo' =>$request->Titulo,
             'Sinopsis'=> $request->Sinopsis,
             'Logo'=> $relativePathLogo,
              'ImagenWeb'=> $relativePathWeb,

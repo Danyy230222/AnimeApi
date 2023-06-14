@@ -34,6 +34,7 @@
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">ID</th>
+                                <th class="px-4 py-3">Titulo</th>
                                 <th class="px-4 py-3">Sinopsis</th>
                                 <th class="px-4 py-3">Logo</th>
                                 <th class="px-4 py-3">ImagenWeb</th>
@@ -59,6 +60,9 @@
 
                                             </div>
                                         </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $item->Titulo }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ $item->Sinopsis }}
