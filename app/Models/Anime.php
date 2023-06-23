@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Anime extends Model
 {
-    protected $fillable = ['Titulo', 'Tipo', 'Sinopsis', 'YearLanzamiento', 'EstudioAnimacion', 'Trailer', 'Calificacion', 'Logo', 'PortadaWeb', 'PortadaMovil'];
+    protected $fillable = ['Titulo', 'Tipo', 'Sinopsis', 'YearLanzamiento', 'EstudioAnimacion', 'Subtitulado', 'Doblado', 'Trailer', 'Calificacion', 'Logo', 'PortadaWeb', 'PortadaMovil'];
     use HasFactory;
 
     public function Generos()

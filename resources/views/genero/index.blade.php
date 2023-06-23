@@ -103,6 +103,11 @@
                 @endif
                 
             </div>
+            @if ($genero->hasPages())
+        <div class="px-6 py-3 dark:bg-gray-700">
+            {{$genero->links('vendor.pagination.tailwind')}}
+        </div>
+        @endif
             
         </div>
     </div>

@@ -26,7 +26,7 @@ class TemporadaController extends Controller
     public function create()
     {
         $anime = Anime::all();
-        return view('temporada.create', compact('an ime'));
+        return view('temporada.create', compact('anime'));
     }
 
 

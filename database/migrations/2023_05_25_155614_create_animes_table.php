@@ -20,6 +20,8 @@ class CreateAnimesTable extends Migration
             $table->text('Sinopsis');
             $table->integer('YearLanzamiento');
             $table->string('EstudioAnimacion');
+            $table->string('Subtitulado');
+            $table->string('Doblado');
             $table->string('Trailer');
             $table->decimal('Calificacion',2 , 1);
             $table->string('Logo');

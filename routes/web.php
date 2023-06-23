@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\FractionController;
 use App\Http\Controllers\GeneroController;
@@ -52,6 +53,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('/anime', AnimeController::class);
     Route::resource('/temporada', TemporadaController::class);
     Route::get('/temporada/crear/{id}', [TemporadaController::class, 'crear'])->name('temporada.crear');
+
+    Route::resource('/capitulo', CapituloController::class);
+    Route::get('/capitulo/crear/{id}', [CapituloController::class, 'crear'])->name('capitulo.crear');
+
     
    
     Route::view('forms', 'forms')->name('forms');

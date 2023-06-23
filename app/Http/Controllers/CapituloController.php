@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Genero;
+use App\Models\Capitulo;
+use App\Models\Temporada;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class GeneroController extends Controller
+class CapituloController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +16,7 @@ class GeneroController extends Controller
      */
     public function index()
     {
-        $genero=Genero::paginate(10);
-        return view('genero.index', compact('genero'));
+        //
     }
 
     /**
@@ -25,7 +26,12 @@ class GeneroController extends Controller
      */
     public function create()
     {
-        return view('genero.create');
+        //
+    }
+
+    public function crear($id){
+        $temporada = Temporada::findOrFail($id);
+        return view('capitulo.create', compact('temporada'));
     }
 
     /**
@@ -36,14 +42,32 @@ class GeneroController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'Nombre' => 'required',
+        $capitulo = new Capitulo();
+
+        $request ->validate([
+            'Nombre'=>'required',
+            'Numero'=>'required',
+            'Duracion'=>'required',
+            'FechaLanzamiento'=>'required',
+            'Imagen'=>'required',
+            'temporada'=>'required'
+
         ]);
 
-        Genero::create([
-            'Nombre'=> $request->Nombre
+        $imagesportada=  $request->file('Imagen')->store('ImagenCapitulo');
+        $relativePathLogo = Storage::url($imagesportada);
+
+        $capitulo = Capitulo::create([
+            'Nombre'=>$request->Nombre,
+            'Numero'=>$request->Numero,
+            'Duracion'=>$request->Duracion,
+            'FechaLanzamiento'=>$request->FechaLanzamiento,
+            'Imagen'=>$relativePathLogo,
+            'temporada_id'=>$request->temporada
         ]);
-        return redirect()->route('genero.index')->with('success', 'Genero Creado Correctamente');
+
+        return redirect()->route('capitulo.show', $capitulo->temporada_id)->with('success', 'Capitulo creado correctamente');
+
     }
 
     /**
@@ -54,7 +78,11 @@ class GeneroController extends Controller
      */
     public function show($id)
     {
-        //
+        $temporada = Temporada::find($id);
+        $capitulo =  $temporada->capitulos;
+        
+        return view('capitulo.index', compact('temporada', 'capitulo'));
+
     }
 
     /**
@@ -88,9 +116,6 @@ class GeneroController extends Controller
      */
     public function destroy($id)
     {
-        $datos= Genero::find($id);
-
-         $datos->delete();
-         return redirect()->route('genero.index')->with('success','Genero eliminado correctamente');
+        //
     }
 }

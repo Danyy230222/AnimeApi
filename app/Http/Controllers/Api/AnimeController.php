@@ -12,7 +12,9 @@ class AnimeController extends Controller
 {
     public function view($id){
         try {
-            $anime = Anime::with('Generos')->findOrFail($id);
+            $anime = Anime::with(['Generos', 'Temporadas' => function ($query) {
+                $query->with('Capitulos');
+            }])->findOrFail($id);
     
             return response()->json([
                 "status" => "ok",

@@ -17,4 +17,10 @@ class Temporada extends Model
         return $this->belongsTo(Anime::class);
     }
 
+    
+    public function Capitulos()
+    {
+        return $this->hasMany(Capitulo::class);
+    }
+
 }
