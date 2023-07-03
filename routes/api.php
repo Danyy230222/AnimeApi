@@ -23,6 +23,8 @@ Route::get('carousel', [CarouselController::class, 'view']);
 Route::get('generos', [GeneroController::class, 'view']);
 Route::get('anime/{id}', [AnimeController::class, 'view']);
 Route::get('generos/{id}', [GeneroController::class, 'listgenero']);
+Route::get('search', [AnimeController::class, 'searchByTitle']);
+
 
 Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::get('user-profile', [UserController::class, 'userProfile']);

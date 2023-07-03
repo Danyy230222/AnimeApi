@@ -116,6 +116,11 @@ class CapituloController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $capitulo = Capitulo::findOrFail($id);
+        $temporadaId = $capitulo->temporada_id; // Obtener el ID de la temporada antes de eliminar el capítulo
+
+        $capitulo->delete();
+        return redirect()->route('capitulo.show', $temporadaId)->with('success', 'Capitulo eliminado exitosamente.');
+        }
+    
 }
