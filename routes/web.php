@@ -8,6 +8,7 @@ use App\Http\Controllers\FractionController;
 use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\ImagenCarouselController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\ServidorController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\YearController;
 use App\Models\Temporada;
@@ -56,6 +57,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::resource('/capitulo', CapituloController::class);
     Route::get('/capitulo/crear/{id}', [CapituloController::class, 'crear'])->name('capitulo.crear');
+
+    Route::resource('/servidor', ServidorController::class);
+    Route::get('/servidor/crear/{id}', [ServidorController::class, 'crear'])->name('servidor.crear');
+
 
     
    

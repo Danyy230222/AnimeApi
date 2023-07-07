@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Anime;
+use App\Models\Capitulo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class AnimeController extends Controller
     public function view($id){
         try {
             $anime = Anime::with(['Generos', 'Temporadas' => function ($query) {
-                $query->with('Capitulos');
+                $query->with(['Capitulos' => function ($query) {
+                    $query->with('Servidor');
+                }]);
             }])->findOrFail($id);
     
             return response()->json([
@@ -75,5 +78,67 @@ class AnimeController extends Controller
     }
 }
 
+public function capitulo($animeid, $capituloid){
+    $anime = Anime::findOrFail($animeid);
+    try {
+        $servidor = Capitulo::with(['Servidor'])->findOrFail($capituloid);
+        return response()->json([
+            "status" => "ok",
+            "result" => $servidor
+        ]);
+    } catch (ModelNotFoundException $exception) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "404",
+                "error_msg" => "No encontrado"
+            )
+        ], 404);
+    }
+    
+}
+
+public function actualizarCapitulo(Request $request, $capituloid)
+{
+    try {
+        $capitulo = Capitulo::findOrFail($capituloid);
+        
+        $capitulo->tiempo_visualizacion = $request->tiempo_visualizacion;
+
+        $capitulo->save();
+
+        return response()->json([
+            "status" => "ok",
+            "result" => $capitulo
+        ]);
+    } catch (ModelNotFoundException $exception) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "404",
+                "error_msg" => "No encontrado"
+            )
+        ], 404);
+    }
+}
+
+public function getCapitulo($id){
+    try {
+        $capitulo = Capitulo::findOrFail($id);
+
+        return response()->json([
+            "status" => "ok",
+            "result" => $capitulo
+        ]);
+    } catch (ModelNotFoundException $exception) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "404",
+                "error_msg" => "No encontrado"
+            )
+        ], 404);
+    }
+}
 
 }

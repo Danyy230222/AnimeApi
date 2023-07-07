@@ -20,6 +20,7 @@ class CreateCapitulosTable extends Migration
             $table->string('Duracion');
             $table->date('FechaLanzamiento');
             $table->string('Imagen');
+            $table->integer('tiempo_visualizacion')->default(0);
             $table->unsignedBigInteger('temporada_id');
             $table->foreign('temporada_id')->references('id')->on('temporadas')->onDelete('cascade');
             $table->timestamps();
