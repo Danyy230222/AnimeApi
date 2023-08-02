@@ -34,6 +34,7 @@ Route::put('capitulo/{capituloid}', [AnimeController::class,'actualizarCapitulo'
 
 Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::get('user/profile', [UserController::class, 'userProfile']);
+    Route::post('/user/upload-profile-image', [UserController::class, 'uploadProfileImage']);
     Route::post('logout', [UserController::class, 'logout']);
 });
 

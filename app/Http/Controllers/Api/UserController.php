@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\Contracts\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class UserController extends Controller
@@ -96,6 +98,37 @@ class UserController extends Controller
             )
             
 
+        ]);
+    }
+
+    public function uploadProfileImage(Request $request)
+    {
+        // Validar la solicitud para asegurarse de que contiene una imagen
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Cambia las extensiones y el tamaño según tus necesidades
+        ]);
+    
+        // Obtenemos el usuario autenticado
+        $user = auth()->user();
+    
+        // Eliminar la imagen anterior si existe
+        if ($user->profile_photo_path) {
+            Storage::delete($user->profile_photo_path);
+        }
+    
+        // Subir la nueva imagen
+        $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+    
+        // Actualizar el campo de ruta de la imagen de perfil en la base de datos
+        $user->profile_photo_path = Storage::url($imagePath);
+        $user->save();
+    
+        return response()->json([
+            "status" => "ok",
+            "result" => array(
+                "msg" => "Imagen de perfil subida exitosamente",
+                "image_path" => $imagePath
+            )
         ]);
     }
 }
