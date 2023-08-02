@@ -78,8 +78,12 @@ class UserController extends Controller
     public function userProfile(){
         return response()->json([
             "status" => "ok",
-            "msg" => "Acerca del perfil de usuario",
-            "data"=> auth()->user()
+            "result" => array(
+                "msg" => "Acerca del perfil de usuario",
+                "Usuario"=> auth()->user()
+            )
+            
+            
 
         ]);
     }

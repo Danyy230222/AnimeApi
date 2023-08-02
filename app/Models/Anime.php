@@ -19,4 +19,9 @@ class Anime extends Model
     {
         return $this->hasMany(Temporada::class);
     }
+
+    public function Comentarios()
+    {
+        return $this->hasMany(Comentario::class);
+    }
 }

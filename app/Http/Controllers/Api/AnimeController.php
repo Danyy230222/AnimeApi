@@ -17,7 +17,12 @@ class AnimeController extends Controller
                 $query->with(['Capitulos' => function ($query) {
                     $query->with('Servidor');
                 }]);
+            }, 'Comentarios' => function ($query) {
+                $query->with('user'); // Incluir los datos del usuario que hizo el comentario
             }])->findOrFail($id);
+
+          
+
     
             return response()->json([
                 "status" => "ok",
@@ -50,7 +55,7 @@ class AnimeController extends Controller
     }
 
     try {
-        $animes = Anime::where('Titulo', 'LIKE', '%' . $searchTerm[0] . '%' . $searchTerm[1] . '%' . $searchTerm[2] . '%')
+        $animes = Anime::where('Titulo', 'LIKE', '%' . $searchTerm . '%' )
             ->get();
 
         if ($animes->isEmpty()) {
