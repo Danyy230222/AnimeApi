@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Lista;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -95,6 +96,7 @@ class UserController extends Controller
             "status" => "ok",
             "result" => array(
                 "msg" => "Cierre de sesion exitoso"
+                
             )
             
 
@@ -127,8 +129,94 @@ class UserController extends Controller
             "status" => "ok",
             "result" => array(
                 "msg" => "Imagen de perfil subida exitosamente",
-                "image_path" => $imagePath
+                "profile_photo_path" => $user->profile_photo_path
             )
+        ]);
+    }
+
+    public function updateProfile(Request $request){
+        $user = auth()->user(); // Obtener el usuario autenticado
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id, // Ignorar el email del usuario actual
+            'password' => 'nullable',
+        ]);
+
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->input('password'));
+        }
+        $user->save();
+
+        return response()->json([
+            'status' => 'ok',
+            'result' => 'Perfil de usuario actualizado exitosamente',
+        ]);
+    }
+
+    public function getUserLists()
+    {
+        $user = auth()->user();
+        $lists = Lista::where('user_id', $user->id)
+        ->with('anime')
+        ->get();
+
+        return response()->json([
+            'status' => 'ok',
+            'result' => $lists,
+        ]);
+    }
+
+    public function createList(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'Nombre' => 'required',
+          
+        ]);
+
+        $lista = new Lista();
+        $lista->Nombre = $request->input('Nombre');
+    
+        $lista->user_id = $user->id;
+        $lista->save();
+         
+
+        return response()->json([
+            'status' => 'ok',
+            
+            'result' => array(
+                'mgs'=>'Lista creada exitosamente',
+                "Lista" => $lista
+                )
+        ]);
+    }
+
+    public function AddList(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'Nombre' => 'required',
+            'anime_id' => 'required|exists:animes,id',
+        ]);
+
+        $lista = new Lista();
+        $lista->Nombre = $request->input('Nombre');
+    
+        $lista->user_id = $user->id;
+        $lista->save();
+         // Adjuntar los animes a la lista utilizando la relación
+        $lista->Anime()->attach($request->input('anime_id'));
+
+        return response()->json([
+            'status' => 'ok',
+            'mgs'=>'Lista creada exitosamente',
+            'result' => $lista
         ]);
     }
 }

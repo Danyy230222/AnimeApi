@@ -24,4 +24,9 @@ class Anime extends Model
     {
         return $this->hasMany(Comentario::class);
     }
+
+    public function Listas()
+{
+    return $this->belongsToMany(Lista::class, 'anime_lista');
+}
 }

@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comentario::class);
     }
+
+    public function Lista()
+    {
+        return $this->hasMany(Lista::class);
+    }
 }

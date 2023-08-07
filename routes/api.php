@@ -36,6 +36,11 @@ Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::get('user/profile', [UserController::class, 'userProfile']);
     Route::post('/user/upload-profile-image', [UserController::class, 'uploadProfileImage']);
     Route::post('logout', [UserController::class, 'logout']);
+    Route::put('user/update-profile', [UserController::class, 'updateProfile']);
+    Route::get('user/lists', [UserController::class, 'getUserLists']);
+    Route::post('user/create-list', [UserController::class, 'createList']);
+    
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
