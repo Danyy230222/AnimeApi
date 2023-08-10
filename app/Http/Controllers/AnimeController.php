@@ -6,6 +6,8 @@ use App\Models\Anime;
 use App\Models\Genero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class AnimeController extends Controller
 {
@@ -58,6 +60,7 @@ class AnimeController extends Controller
              'generos'=> 'required'
         ]);
 
+        $slug = Str::slug($request->Titulo, '-');
         $imagesLogo=  $request->file('Logo')->store('Logoanime');
         $relativePathLogo = Storage::url($imagesLogo);
       
@@ -71,6 +74,8 @@ class AnimeController extends Controller
 
         $anime= Anime::create([
             'Titulo'=> $request->Titulo,
+            'Slug' => $slug,
+            'OtrosNombres'=>$request->OtrosNombres,
             'Sinopsis'=> $request->Sinopsis,
              'Tipo'=> $request->Tipo,
              'YearLanzamiento'=> $request->YearLanzamiento,

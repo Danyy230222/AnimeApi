@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anime;
 use App\Models\Lista;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -196,27 +197,123 @@ class UserController extends Controller
         ]);
     }
 
-    public function AddList(Request $request)
+    public function deleteList($id)
+    {
+        $user = auth()->user();
+        
+        // Busca la lista por su ID y verifica si pertenece al usuario autenticado
+        $lista = Lista::where('id', $id)
+                    ->where('user_id', $user->id)
+                    ->first();
+        
+        if (!$lista) {
+            return response()->json([
+                'status' => 'error',
+                'result' => array(
+                    'mgs' => 'Lista no encontrada'
+                ),
+            ], 404);
+        }
+        
+        // Elimina la lista
+        $lista->delete();
+        
+        return response()->json([
+            'status' => 'ok',
+            'result' => array(
+                'mgs' => 'Lista borrada exitosamente'
+            ),
+        ]);
+    }
+
+    public function AddAnimeToList(Request $request)
     {
         $user = auth()->user();
 
         $request->validate([
-            'Nombre' => 'required',
             'anime_id' => 'required|exists:animes,id',
+            'lista_id' => 'required|exists:listas,id', // Asegúrate de ajustar el nombre de la tabla si es diferente
         ]);
 
-        $lista = new Lista();
-        $lista->Nombre = $request->input('Nombre');
-    
-        $lista->user_id = $user->id;
-        $lista->save();
-         // Adjuntar los animes a la lista utilizando la relación
-        $lista->Anime()->attach($request->input('anime_id'));
+        $animeId = $request->input('anime_id');
+        $listaId = $request->input('lista_id');
+
+        // Verificar si el usuario tiene permiso para agregar a esta lista, si es necesario
+
+        $lista = Lista::findOrFail($listaId);
+        $anime = Anime::findOrFail($animeId);
+
+        // Verificar si el anime ya está en la lista para evitar duplicados
+        if ($lista->Anime()->where('anime_id', $animeId)->exists()) {
+            return response()->json([
+                'status' => 'error',
+                'result'=> array(
+                    'mgs' => 'El anime ya está en la lista'
+                ),
+            ], 400);
+        }
+
+        // Adjuntar el anime a la lista utilizando la relación
+        $lista->Anime()->attach($anime);
 
         return response()->json([
             'status' => 'ok',
-            'mgs'=>'Lista creada exitosamente',
-            'result' => $lista
+            'result'=> array(
+                'mgs' => 'Anime agregado exitosamente a la lista'
+            ),
         ]);
     }
+    public function animeEnLista($animeId)
+    {
+        $user = auth()->user();
+        $anime = Anime::findOrFail($animeId);
+    
+        $lists = $user->Lista()->whereHas('Anime', function ($query) use ($animeId) {
+            $query->where('anime_id', $animeId);
+        })->get();
+    
+        return response()->json([
+            'status' => 'ok',
+            'result' => [
+                'listasDelUsuarioConAnime' => $lists,
+            ],
+        ]);
+    }
+
+    public function isAnimeInList($animeId, $listId)
+{
+    $user = auth()->user();
+
+    $list = Lista::where('user_id', $user->id)
+        ->where('id', $listId)
+        ->with('anime')
+        ->first();
+
+    if ($list) {
+        return $list->anime->contains('id', $animeId);
+    }
+
+    return false;
+}
+
+public function removeAnimeFromList(Request $request)
+{
+    $animeId = $request->input('anime_id');
+    $listaId = $request->input('lista_id');
+
+    $lista = Lista::findOrFail($listaId);
+    $lista->anime()->detach($animeId);
+
+    return response()->json([
+        'status' => 'ok',
+        'result' => array(
+            'mgs'=> 'Anime eliminado de su lista',
+            'lista'=>$lista
+        ),
+    ]);
+}
+    
+ 
+
+   
 }

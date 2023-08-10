@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Genero;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GeneroController extends Controller
 {
@@ -38,10 +39,15 @@ class GeneroController extends Controller
     {
         $this->validate($request, [
             'Nombre' => 'required',
+            'Imagen'=> 'required'
         ]);
 
+        $imagesGenero=  $request->file('Imagen')->store('LogoGenero');
+        $relativePathLogo = Storage::url($imagesGenero);
+
         Genero::create([
-            'Nombre'=> $request->Nombre
+            'Nombre'=> $request->Nombre,
+            'Imagen'=> $relativePathLogo
         ]);
         return redirect()->route('genero.index')->with('success', 'Genero Creado Correctamente');
     }

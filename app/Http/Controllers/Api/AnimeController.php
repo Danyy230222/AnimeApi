@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class AnimeController extends Controller
 {
-    public function view($id){
+    public function view($slug){
         try {
             $anime = Anime::with(['Generos', 'Temporadas' => function ($query) {
                 $query->with(['Capitulos' => function ($query) {
@@ -19,7 +19,7 @@ class AnimeController extends Controller
                 }]);
             }, 'Comentarios' => function ($query) {
                 $query->with('user'); // Incluir los datos del usuario que hizo el comentario
-            }])->findOrFail($id);
+            }])->where('Slug', $slug)->firstOrFail();
 
           
 
@@ -56,6 +56,7 @@ class AnimeController extends Controller
 
     try {
         $animes = Anime::where('Titulo', 'LIKE', '%' . $searchTerm . '%' )
+        ->orWhere('OtrosNombres', 'LIKE', '%' . $searchTerm . '%')
             ->get();
 
         if ($animes->isEmpty()) {

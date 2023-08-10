@@ -9,7 +9,7 @@ class Genero extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['Nombre'];
+    protected $fillable = ['Nombre', 'Imagen'];
 
     public function animes()
     {

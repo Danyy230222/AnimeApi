@@ -3,7 +3,7 @@
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Crear genero
         </h2>
-        <form action="{{route('genero.store')}}" method="post">
+        <form action="{{route('genero.store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <label class="block text-sm">
@@ -13,6 +13,8 @@
                         placeholder="Ingrese el nombre del Articulo" id="Nombre" name="Nombre">
                         <x-jet-input-error for="Nombre" />
                 </label>
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 mt-4" for="file_input">Imagen</label>
+                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="Imagen" type="file" name="Imagen">
 
 
 

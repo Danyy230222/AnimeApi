@@ -30,7 +30,7 @@ class GeneroController extends Controller
 
         return response()->json([
             "status" => "ok",
-            "genero" => $genero->Nombre, // Agrega el nombre del género
+            "genero" => $genero, // Agrega el nombre del género
             "result" => $animes
         ]);
     } catch (ModelNotFoundException $e) {

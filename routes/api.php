@@ -39,6 +39,15 @@ Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::put('user/update-profile', [UserController::class, 'updateProfile']);
     Route::get('user/lists', [UserController::class, 'getUserLists']);
     Route::post('user/create-list', [UserController::class, 'createList']);
+    Route::delete('user/delete-list/{id}',  [UserController::class,'deleteList']);
+
+    Route::post('user/add-anime-to-list', [UserController::class,'AddAnimeToList']);
+    Route::get('user/{animeId}/lists', [UserController::class, 'animeEnLista']);
+    Route::get('user/lists/{animeId}/{listId}', [UserController::class, 'isAnimeInList']);
+    Route::post('user/lists/delete', [UserController::class, 'removeAnimeFromList']);
+
+
+
     
 
 });

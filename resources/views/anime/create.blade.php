@@ -14,18 +14,27 @@
                         <x-jet-input-error for="Titulo" />
                 </label>
                 <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Otros Nombres</span>
+                    <input
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                        placeholder="Ingrese otros nombres si es que existen" id="OtrosNombres" name="OtrosNombres">
+                        <x-jet-input-error for="OtrosNombres" />
+                </label>
+                <label class="block text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Sinopsis</span>
                     <input
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="Ingrese la Sinopsis" id="Sinopsis" name="Sinopsis">
                         <x-jet-input-error for="Sinopsis" />
                 </label>
+
                 <label class="block text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Tipo</span>
                     <input
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="Ingrese el tipo" id="Tipo" name="Tipo">
                         <x-jet-input-error for="Tipo" />
+                        
                 </label>
                 <label class="block text-sm">
                   <span class="text-gray-700 dark:text-gray-400">Año de lanzamiento</span>
