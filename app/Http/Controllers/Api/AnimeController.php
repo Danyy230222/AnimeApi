@@ -84,10 +84,10 @@ class AnimeController extends Controller
     }
 }
 
-public function capitulo($animeid, $capituloid){
-    $anime = Anime::findOrFail($animeid);
+public function capitulo($slug, $capituloid){
+    $anime = Anime::where('Slug', $slug)->firstOrFail();
     try {
-        $servidor = Capitulo::with(['Servidor'])->findOrFail($capituloid);
+        $servidor = Capitulo::with(['Servidor', 'Subtitulo', 'Doblado'])->findOrFail($capituloid);
         return response()->json([
             "status" => "ok",
             "result" => $servidor

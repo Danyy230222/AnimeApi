@@ -25,7 +25,7 @@ Route::get('anime/{id}', [AnimeController::class, 'view']);
 Route::get('generos/{id}', [GeneroController::class, 'listgenero']);
 Route::get('search', [AnimeController::class, 'searchByTitle']);
 
-Route::get('anime/{animeid}/view/{capituloid}', [AnimeController::class, 'capitulo']);
+Route::get('anime/{slug}/view/{capituloid}', [AnimeController::class, 'capitulo']);
 
 Route::get('cap/{id}', [AnimeController::class, 'getCapitulo']);
 Route::put('capitulo/{capituloid}', [AnimeController::class,'actualizarCapitulo']);

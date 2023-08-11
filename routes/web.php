@@ -4,11 +4,13 @@ use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\CarouselController;
+use App\Http\Controllers\DobladoController;
 use App\Http\Controllers\FractionController;
 use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\ImagenCarouselController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ServidorController;
+use App\Http\Controllers\SubtituloController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\YearController;
 use App\Models\Temporada;
@@ -60,6 +62,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     Route::resource('/servidor', ServidorController::class);
     Route::get('/servidor/crear/{id}', [ServidorController::class, 'crear'])->name('servidor.crear');
+    Route::resource('/subtitulo', SubtituloController::class);
+    Route::get('/subtitulo/crear/{id}', [SubtituloController::class, 'crear'])->name('subtitulo.crear');
+    Route::resource('/doblado', DobladoController::class);
+    Route::get('/doblado/crear/{id}', [DobladoController::class, 'crear'])->name('doblado.crear');
 
 
     

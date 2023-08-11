@@ -20,5 +20,14 @@ class Capitulo extends Model
     {
         return $this->hasMany(Servidor::class);
     }
+
+    public function Subtitulo()
+    {
+        return $this->hasMany(Subtitulo::class);
+    }
+    public function Doblado()
+    {
+        return $this->hasMany(Doblado::class);
+    }
     
 }
