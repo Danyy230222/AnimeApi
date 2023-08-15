@@ -47,6 +47,8 @@ class SubtituloController extends Controller
         $request ->validate([
             'Idioma'=>'required',
             'Url'=>'required',
+            'Abreviatura'=>'required',
+            'Default'=> 'required',
             'capitulo'=> 'required'
             
 
@@ -57,6 +59,8 @@ class SubtituloController extends Controller
         $subtitulo = Subtitulo::create([
             'Idioma'=>strtoupper($request->Idioma),
             'Url'=>$subtitulopath,
+            'Abreviatura'=>$request->Abreviatura,
+            'Default'=> $request->Default,
             'capitulo_id'=>$request->capitulo
         ]);
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subtitulo extends Model
 {
-    protected $fillable=['Idioma', 'Url', 'capitulo_id'];
+    protected $fillable=['Idioma', 'Url', 'Abreviatura', 'Default', 'capitulo_id'];
     use HasFactory;
 
     public function Capitulo()

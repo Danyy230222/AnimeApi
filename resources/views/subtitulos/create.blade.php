@@ -18,7 +18,20 @@
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 mt-4" for="file_input">Archivo de  subtitulo</label>
                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="Url" type="file" name="Url">
 
-                
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Abreviatura</span>
+                    <input
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                        placeholder="Ingrese la abreviatura del idioma (Español = es)" id="Abreviatura" name="Abreviatura" >
+                        <x-jet-input-error for="Abreviatura" />
+                </label>
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">Subtitulo por defecto</span>
+                    <input
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                        placeholder="Ingrese true o false" id="Default" name="Default" >
+                        <x-jet-input-error for="Default" />
+                </label>
         
 
                 <label for="countries" class="block mb-2 text-sm text-gray-700 dark:text-gray-400">Seleciona El capitulo</label>

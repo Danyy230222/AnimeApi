@@ -17,6 +17,8 @@ class CreateSubtitulosTable extends Migration
             $table->id();
             $table->string('Idioma');
             $table->string('Url');
+            $table->string('Abreviatura');
+            $table->string('Default');
             $table->unsignedBigInteger('capitulo_id');
             $table->foreign('capitulo_id')->references('id')->on('capitulos')->onDelete('cascade');
             $table->timestamps();
