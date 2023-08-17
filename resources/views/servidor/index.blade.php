@@ -119,7 +119,7 @@
             
         </div>
         <div class="flex mt-6 text-sm ">
-            <a href="{{route('anime.index')}}" class=" px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple">
+            <a href="{{route('capitulo.show', $capitulo->temporada->anime->id)}}" class=" px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-purple">
                 
                     
                     Regresar a animes

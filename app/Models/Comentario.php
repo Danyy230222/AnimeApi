@@ -9,7 +9,7 @@ class Comentario extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['Comentario', 'Calificacion', 'anime_id', 'user_id'];
+    protected $fillable = ['Comentario', 'Calificacion', 'Like', 'Dislike', 'anime_id', 'user_id'];
 
     public function Anime()
     {

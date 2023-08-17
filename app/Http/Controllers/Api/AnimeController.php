@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Anime;
 use App\Models\Capitulo;
+use App\Models\Comentario;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\ValidationException;
 
 class AnimeController extends Controller
 {
@@ -18,7 +19,8 @@ class AnimeController extends Controller
                     $query->with('Servidor');
                 }]);
             }, 'Comentarios' => function ($query) {
-                $query->with('user'); // Incluir los datos del usuario que hizo el comentario
+                $query->with('user')
+                ->orderBy('created_at', 'desc'); // Incluir los datos del usuario que hizo el comentario
             }])->where('Slug', $slug)->firstOrFail();
 
           
@@ -145,6 +147,107 @@ public function getCapitulo($id){
             )
         ], 404);
     }
+}
+
+public function crearComentario(Request $request, $slug)
+{
+    try {
+        $anime = Anime::where('Slug', $slug)->firstOrFail();
+        $user = auth()->user(); // Obtener el usuario autenticado
+        
+        $data = $request->validate([
+            'Comentario' => 'required|string',
+            'Calificacion' => 'required|numeric|min:1|max:5',
+        ]);
+
+        // Crear el comentario y asociarlo al anime
+        $comentario = new Comentario();
+        $comentario->Comentario = $data['Comentario']; // Actualiza el nombre del campo según tu esquema
+        $comentario->Calificacion = $data['Calificacion']; // Actualiza el nombre del campo según tu esquema
+        
+        // Asigna las claves foráneas
+        $comentario->anime_id = $anime->id;
+        $comentario->user_id = $user->id; 
+
+        // Guarda el comentario
+        $comentario->save();
+
+        return response()->json([
+            "status" => "ok",
+            "result" => array(
+                "mgs"=> "Comentario creado",
+                $comentario)
+        ], 201); // Código de respuesta "Created"
+    } catch (ModelNotFoundException $exception) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "404",
+                "error_msg" => "Anime no encontrado"
+            )
+        ], 404);
+    } catch (ValidationException $validationException) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "422",
+                "error_msg" => "Datos de comentario inválidos",
+                "errors" => $validationException->errors(),
+            )
+        ], 422); // Código de respuesta "Unprocessable Entity"
+    }
+}
+
+public function getAllComentarios($slug, $orden)
+{
+    try {
+        $anime = Anime::where('Slug', $slug)->firstOrFail();
+        
+        $comentariosQuery = Comentario::where('anime_id', $anime->id);
+
+        if ($orden === 'nuevos') {
+            $comentariosQuery->orderBy('created_at', 'desc');
+        } elseif ($orden === 'antiguos') {
+            $comentariosQuery->orderBy('created_at', 'asc');
+        }
+
+        $comentarios = $comentariosQuery->with('user')->get();
+        
+        return response()->json([
+            "status" => "ok",
+            "result" => $comentarios
+        ]);
+    } catch (ModelNotFoundException $exception) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "404",
+                "error_msg" => "Anime no encontrado"
+            )
+        ], 404);
+    }
+}
+
+public function likeComentario($id)
+{
+    $comentario = Comentario::findOrFail($id);
+    $comentario->increment('Like'); // Incrementa el contador de likes
+
+    return response()->json([
+        'status' => 'ok',
+        'message' => 'Like actualizado correctamente',
+    ]);
+}
+
+public function dislikeComentario($id)
+{
+    $comentario = Comentario::findOrFail($id);
+        $comentario->increment('Dislike'); // Incrementa el contador de dislikes
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Dislike actualizado correctamente',
+        ]);
 }
 
 }

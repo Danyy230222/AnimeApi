@@ -29,7 +29,7 @@ Route::get('anime/{slug}/view/{capituloid}', [AnimeController::class, 'capitulo'
 
 Route::get('cap/{id}', [AnimeController::class, 'getCapitulo']);
 Route::put('capitulo/{capituloid}', [AnimeController::class,'actualizarCapitulo']);
-
+Route::get('anime/{slug}/comentario/{orden}', [AnimeController::class, 'getAllComentarios']);
 
 
 Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
@@ -45,6 +45,10 @@ Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::get('user/{animeId}/lists', [UserController::class, 'animeEnLista']);
     Route::get('user/lists/{animeId}/{listId}', [UserController::class, 'isAnimeInList']);
     Route::post('user/lists/delete', [UserController::class, 'removeAnimeFromList']);
+
+    Route::post('anime/{slug}/comentarios', [AnimeController::class, 'crearComentario']);
+    Route::put('comentario/{id}/like', [AnimeController::class, 'likeComentario']);
+    Route::put('comentario/{id}/dislike', [AnimeController::class, 'dislikeComentario']);
 
 
 

@@ -3,7 +3,7 @@
         <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Crear subtitulo del capitulo "{{$capitulo->Nombre}}" de {{$capitulo->temporada->anime->Titulo}} 
         </h2>
-        <form action="{{route('subtitulo.store')}}" method="post" enctype="multipart/form-data">
+        <form action="{{route('subtitulo.store')}}" method="post">
             @csrf
             <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <label class="block text-sm">
@@ -14,9 +14,14 @@
                         <x-jet-input-error for="Idioma" />
                 </label>
 
+                <label class="block text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">URL</span>
+                    <input
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                        placeholder="Ingrese la url del archivo vtt" id="Url" name="Url" >
+                        <x-jet-input-error for="Url" />
+                </label>
                
-                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 mt-4" for="file_input">Archivo de  subtitulo</label>
-                <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="Url" type="file" name="Url">
 
                 <label class="block text-sm">
                     <span class="text-gray-700 dark:text-gray-400">Abreviatura</span>

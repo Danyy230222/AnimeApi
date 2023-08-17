@@ -17,6 +17,8 @@ class CreateComentariosTable extends Migration
             $table->id();
             $table->longText('Comentario');
             $table->decimal('Calificacion', 2,1);
+            $table->integer('Like')->default(0);
+            $table->integer('Dislike')->default(0);
             $table->unsignedBigInteger('anime_id');
             $table->unsignedBigInteger('user_id'); 
             $table->foreign('anime_id')->references('id')->on('animes')->onDelete('cascade');

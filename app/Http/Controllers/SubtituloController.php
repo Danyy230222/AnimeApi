@@ -53,12 +53,11 @@ class SubtituloController extends Controller
             
 
         ]);
-        $subtituloarchivo=  $request->file('Url')->store('SubtitulosArchivos');
-        $subtitulopath = Storage::url($subtituloarchivo);
+        
 
         $subtitulo = Subtitulo::create([
-            'Idioma'=>strtoupper($request->Idioma),
-            'Url'=>$subtitulopath,
+            'Idioma'=>$request->Idioma,
+            'Url'=>$request->Url,
             'Abreviatura'=>$request->Abreviatura,
             'Default'=> $request->Default,
             'capitulo_id'=>$request->capitulo
