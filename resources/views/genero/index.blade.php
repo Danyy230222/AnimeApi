@@ -57,7 +57,7 @@
                                         {{ $item->Nombre }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        <img src="{{ $item->Imagen }}" alt="{{ $item->Imagen }}" >
+                                        <img src="{{ $item->Imagen }}" alt="{{ $item->Imagen }}" style="width: 250px">
                                     </td>
                                    
                                     
