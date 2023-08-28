@@ -71,7 +71,8 @@ class GeneroController extends Controller
      */
     public function edit($id)
     {
-        //
+        $genero = Genero::find($id);
+        return view('genero.edit', compact('genero'));
     }
 
     /**
@@ -83,9 +84,28 @@ class GeneroController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        $this->validate($request, [
+            'Nombre' => 'required',
+        ]);
 
+        $genero = Genero::find($id);
+
+        $genero->Nombre = $request->input('Nombre');
+
+        if ($request->hasFile('Imagen')) {
+            $this->validate($request, [
+                'Imagen' => 'required'
+            ]);
+
+            $imagesGenero = $request->file('Imagen')->store('LogoGenero');
+            $relativePathLogo = Storage::url($imagesGenero);
+            $genero->Imagen = $relativePathLogo;
+        }
+
+        $genero->save();
+
+        return redirect()->route('genero.index')->with('success', 'Genero actualizado correctamente');
+    }
     /**
      * Remove the specified resource from storage.
      *

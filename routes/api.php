@@ -26,9 +26,10 @@ Route::get('generos/{id}', [GeneroController::class, 'listgenero']);
 Route::get('search', [AnimeController::class, 'searchByTitle']);
 
 Route::get('anime/{slug}/view/{capituloid}', [AnimeController::class, 'capitulo']);
-
-Route::get('cap/{id}', [AnimeController::class, 'getCapitulo']);
 Route::put('capitulo/{capituloid}', [AnimeController::class,'actualizarCapitulo']);
+    Route::get('cap/{id}', [AnimeController::class, 'getCapitulo']);
+
+
 Route::get('anime/{slug}/comentario/{orden}', [AnimeController::class, 'getAllComentarios']);
 
 
@@ -50,8 +51,7 @@ Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::put('comentario/{id}/like', [AnimeController::class, 'likeComentario']);
     Route::put('comentario/{id}/dislike', [AnimeController::class, 'dislikeComentario']);
 
-
-
+    
     
 
 });

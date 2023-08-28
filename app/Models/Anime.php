@@ -26,7 +26,13 @@ class Anime extends Model
     }
 
     public function Listas()
-{
-    return $this->belongsToMany(Lista::class, 'anime_lista');
-}
+    {
+        return $this->belongsToMany(Lista::class, 'anime_lista');
+    }
+
+    public function Detalle()
+    {
+        return $this->hasMany(Detalle::class);
+    }
+
 }

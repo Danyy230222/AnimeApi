@@ -84,7 +84,9 @@ class ServidorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $servidor = Servidor::findOrFail($id);
+        $capitulo = $servidor->capitulo;
+        return view('servidor.edit', compact('servidor', 'capitulo'));
     }
 
     /**
@@ -96,7 +98,19 @@ class ServidorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $servidor = Servidor::findOrFail($id);
+
+        $request->validate([
+            'Nombre' => 'required',
+            'Url' => 'required',
+        ]);
+    
+        $servidor->update([
+            'Nombre' => strtoupper($request->Nombre),
+            'Url' => $request->Url,
+        ]);
+    
+        return redirect()->route('servidor.show', $servidor->capitulo_id)->with('success', 'Servidor actualizado correctamente');
     }
 
     /**
@@ -107,6 +121,11 @@ class ServidorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $servidor = Servidor::findOrFail($id);
+        $capituloId = $servidor->capitulo_id; // Obtener el ID del capítulo antes de eliminar el servidor
+    
+        $servidor->delete();
+    
+        return redirect()->route('servidor.show', $capituloId)->with('success', 'Servidor eliminado exitosamente.');
     }
 }

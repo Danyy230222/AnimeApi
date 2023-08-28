@@ -18,7 +18,7 @@ class AnimeController extends Controller
      */
     public function index()
     {
-        $anime=Anime::all();
+        $anime=Anime::paginate(10);
 
         
 
@@ -116,7 +116,11 @@ class AnimeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $anime = Anime::findOrFail($id);
+        $generos = Genero::all();
+        $generosAsignados = $anime->Generos->pluck('id')->toArray();
+
+        return view('anime.edit', compact('anime', 'generos', 'generosAsignados'));
     }
 
     /**
@@ -128,7 +132,55 @@ class AnimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $anime = Anime::findOrFail($id);
+        $request ->validate([
+            'Titulo'=> 'required',
+            'Sinopsis'=> 'required',
+             'Tipo'=> 'required',
+             'YearLanzamiento'=> 'required',
+             'EstudioAnimacion'=> 'required',
+             'Subtitulado'=>'required',
+             'Doblado'=>'required',
+             'Trailer'=>'required',
+             
+             'generos'=> 'required'
+        ]);
+        $slug = Str::slug($request->Titulo, '-');
+        $anime->Titulo = $request->Titulo;
+        $anime->Slug = $slug;
+        $anime->OtrosNombres = $request->OtrosNombres;
+        $anime->Sinopsis = $request->Sinopsis;
+        $anime->Tipo = $request->Tipo;
+        $anime->YearLanzamiento = $request->YearLanzamiento;
+        $anime->EstudioAnimacion = $request->EstudioAnimacion;
+        $anime->Subtitulado = $request->Subtitulado;
+        $anime->Doblado = $request->Doblado;
+        $anime->Trailer = $request->Trailer;
+        $generosSeleccionados = $request->input('generos');
+        // Actualizar relaciones con géneros
+        $generosSeleccionados = $request->input('generos');
+        $anime->Generos()->sync($generosSeleccionados);
+
+        if ($request->hasFile('Logo')) {
+            // Sube el archivo y actualiza la ruta
+            $imagesLogo = $request->file('Logo')->store('Logoanime');
+            $anime->Logo = Storage::url($imagesLogo);
+        }
+        if ($request->hasFile('PortadaMovil')) {
+            // Sube el archivo y actualiza la ruta
+            $PortadaMovil = $request->file('PortadaMovil')->store('PortadaMovil');
+            $anime->PortadaMovil = Storage::url($PortadaMovil);
+        }
+        if ($request->hasFile('PortadaWeb')) {
+            // Sube el archivo y actualiza la ruta
+            $PortadaWeb = $request->file('PortadaWeb')->store('PortadaWeb');
+            $anime->PortadaWeb = Storage::url($PortadaWeb);
+        }
+        $anime->save();
+        return redirect()->route('anime.index')->with('success', 'Anime actualizado exitosamente.');
+
+
+        
     }
 
     /**

@@ -93,7 +93,9 @@ class CapituloController extends Controller
      */
     public function edit($id)
     {
-        //
+        $capitulo = Capitulo::findOrFail($id);
+        $temporada = $capitulo->temporada;
+        return view('capitulo.edit', compact('capitulo', 'temporada'));
     }
 
     /**
@@ -105,7 +107,32 @@ class CapituloController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $capitulo = Capitulo::findOrFail($id);
+
+    $request->validate([
+        'Nombre' => 'required',
+        'Numero' => 'required',
+        'Duracion' => 'required',
+        'FechaLanzamiento' => 'required',
+        'Imagen' => 'nullable|image', // Permitir imagen opcional
+    ]);
+
+    // Actualizar los campos del capítulo
+    $capitulo->update([
+        'Nombre' => $request->Nombre,
+        'Numero' => $request->Numero,
+        'Duracion' => $request->Duracion,
+        'FechaLanzamiento' => $request->FechaLanzamiento,
+    ]);
+
+    // Si se proporcionó una nueva imagen, actualizarla
+    if ($request->hasFile('Imagen')) {
+        $imagesportada = $request->file('Imagen')->store('ImagenCapitulo');
+        $relativePathLogo = Storage::url($imagesportada);
+        $capitulo->update(['Imagen' => $relativePathLogo]);
+    }
+
+    return redirect()->route('capitulo.show', $capitulo->temporada_id)->with('success', 'Capitulo actualizado correctamente.');
     }
 
     /**

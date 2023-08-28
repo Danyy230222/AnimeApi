@@ -83,7 +83,10 @@ class TemporadaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $temporada = Temporada::findOrFail($id);
+        $anime = $temporada->anime;
+    
+        return view('temporada.edit', compact('temporada', 'anime'));
     }
 
     /**
@@ -95,7 +98,24 @@ class TemporadaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $temporada = Temporada::findOrFail($id);
+
+    $request->validate([
+        'Nombre' => 'required',
+        'FechaInicio' => 'required',
+        'FechaFin' => 'required',
+        'CantidadCapitulos' => 'required',
+    ]);
+
+    $temporada->update([
+        'Nombre' => $request->Nombre,
+        'FechaInicio' => $request->FechaInicio,
+        'FechaFin' => $request->FechaFin,
+        'CantidadCapitulos' => $request->CantidadCapitulos,
+    ]);
+
+    return redirect()->route('temporada.show', $temporada->anime_id)
+        ->with('success', 'Temporada actualizada correctamente');
     }
 
     /**
@@ -107,8 +127,9 @@ class TemporadaController extends Controller
     public function destroy($id)
     {
         $datos= Temporada::find($id);
+        $anime = Anime::find($id);
 
         $datos->delete();
-        return redirect()->route('anime.index')->with('success','Temporada eliminado correctamente');
+        return redirect()->route('anime.show', $anime->id)->with('success','Temporada eliminado correctamente');
     }
 }

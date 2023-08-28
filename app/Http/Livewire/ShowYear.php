@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Anime;
 use App\Models\Year;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -20,9 +21,10 @@ class ShowYear extends Component
 
     public function render()
     {
-        $year=Year::where('year', 'like', '%' . $this->search . '%')
+        $anime=Anime::where('Titulo', 'like', '%' . $this->search . '%')
+                    ->orWhere('OtrosNombres', 'like', '%' . $this->search . '%')
                     ->orderBy('id')
                     ->paginate(10);
-        return view('livewire.show-year', compact('year'));
+        return view('livewire.show-year', compact('anime'));
     }
 }

@@ -21,7 +21,7 @@ class AnimeController extends Controller
             }, 'Comentarios' => function ($query) {
                 $query->with('user')
                 ->orderBy('created_at', 'desc'); // Incluir los datos del usuario que hizo el comentario
-            }])->where('Slug', $slug)->firstOrFail();
+            }, 'Detalle'])->where('Slug', $slug)->firstOrFail();
 
           
 

@@ -87,7 +87,9 @@ class SubtituloController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subtitulo = Subtitulo::findOrFail($id);
+        $capitulo = $subtitulo->capitulo;
+        return view('subtitulos.edit', compact('subtitulo', 'capitulo'));
     }
 
     /**
@@ -99,7 +101,23 @@ class SubtituloController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $subtitulo = Subtitulo::findOrFail($id);
+
+        $request->validate([
+            'Idioma' => 'required',
+            'Url' => 'required',
+            'Abreviatura' => 'required',
+            'Default' => 'required',
+        ]);
+    
+        $subtitulo->update([
+            'Idioma' => $request->Idioma,
+            'Url' => $request->Url,
+            'Abreviatura' => $request->Abreviatura,
+            'Default' => $request->Default,
+        ]);
+    
+        return redirect()->route('subtitulo.show', $subtitulo->capitulo_id)->with('success', 'Subtítulo actualizado correctamente');
     }
 
     /**
@@ -110,6 +128,11 @@ class SubtituloController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subtitulo = Subtitulo::findOrFail($id);
+    $capituloId = $subtitulo->capitulo_id; // Obtener el ID del capítulo antes de eliminar el subtítulo
+
+    $subtitulo->delete();
+
+    return redirect()->route('subtitulo.show', $capituloId)->with('success', 'Subtítulo eliminado exitosamente.');
     }
 }

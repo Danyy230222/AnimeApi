@@ -4,6 +4,7 @@ use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\CarouselController;
+use App\Http\Controllers\DetalleController;
 use App\Http\Controllers\DobladoController;
 use App\Http\Controllers\FractionController;
 use App\Http\Controllers\GeneroController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\ServidorController;
 use App\Http\Controllers\SubtituloController;
 use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\YearController;
+use App\Models\DetalleAnime;
 use App\Models\Temporada;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +50,7 @@ Route::get('/manager/{id}',[ManagerController::class, 'showarticle'])->name('man
 Route::resource('/carousel', CarouselController::class);
 Route::resource('/imagencarousel', ImagenCarouselController::class);
 
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'restrict.api.users']], function () {
     Route::get('/', function () { return view('dashboard');});
     
     Route::view('dashboard', 'dashboard')->name('dashboard');
@@ -67,7 +69,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::resource('/doblado', DobladoController::class);
     Route::get('/doblado/crear/{id}', [DobladoController::class, 'crear'])->name('doblado.crear');
 
-
+    Route::resource('/detalle', DetalleController::class);
+    Route::get('/detalle/crear/{id}', [DetalleController::class, 'crear'])->name('detalle.crear');
     
    
     Route::view('forms', 'forms')->name('forms');
