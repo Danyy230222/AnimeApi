@@ -250,4 +250,26 @@ public function dislikeComentario($id)
         ]);
 }
 
+public function listProximosAnimes()
+{
+    try {
+        $proximosAnimes = Anime::whereHas('Detalle', function ($query) {
+            $query->where('Emision', 'Proximamente');
+        })->with(['Generos', 'Detalle'])->get();
+
+        return response()->json([
+            "status" => "ok",
+            "result" => $proximosAnimes
+        ]);
+    } catch (ModelNotFoundException $exception) {
+        return response()->json([
+            "status" => "error",
+            "result" => array(
+                "error_id" => "404",
+                "error_msg" => "No se encontraron animes próximos"
+            )
+        ], 404);
+    }
+}
+
 }

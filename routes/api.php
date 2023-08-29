@@ -32,6 +32,8 @@ Route::put('capitulo/{capituloid}', [AnimeController::class,'actualizarCapitulo'
 
 Route::get('anime/{slug}/comentario/{orden}', [AnimeController::class, 'getAllComentarios']);
 
+Route::get('proximos-animes', [AnimeController::class, 'listProximosAnimes']);
+
 
 Route::group(['middleware' => ["auth:sanctum", 'verified']], function(){
     Route::get('user/profile', [UserController::class, 'userProfile']);

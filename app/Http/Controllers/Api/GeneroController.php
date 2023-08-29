@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anime;
 use App\Models\Genero;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -26,7 +27,14 @@ class GeneroController extends Controller
 {
     try {
         $genero = Genero::findOrFail($id);
-        $animes = $genero->animes()->orderBy('YearLanzamiento', 'desc')->get();
+        $animes = Anime::whereHas('Generos', function ($query) use ($genero) {
+            $query->where('genero_id', $genero->id);
+        })
+        ->whereDoesntHave('Detalle', function ($query) {
+            $query->where('Emision', 'Proximamente');
+        })
+        ->orderBy('YearLanzamiento', 'desc')
+        ->get();
 
         return response()->json([
             "status" => "ok",
