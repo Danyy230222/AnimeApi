@@ -9,7 +9,7 @@ if [ ! -d /.composer ]; then
 fi
 
 npm install
-npm run dev
+npm run prod
 composer install
 php artisan migrate --force
 php artisan key:generate
